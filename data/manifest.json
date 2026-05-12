@@ -1,0 +1,612 @@
+{
+  "generatedAt": "2026-05-12T20:00:59.559Z",
+  "source": "https://download.geonames.org/export/zip/allCountries.zip",
+  "formatVersion": 1,
+  "countries": {
+    "AD": {
+      "file": "AD.json",
+      "count": 7,
+      "bytes": 151
+    },
+    "AE": {
+      "file": "AE.json",
+      "count": 178171,
+      "bytes": 915683
+    },
+    "AI": {
+      "file": "AI.json",
+      "count": 1,
+      "bytes": 132
+    },
+    "AL": {
+      "file": "AL.json",
+      "count": 489,
+      "bytes": 1052
+    },
+    "AR": {
+      "file": "AR.json",
+      "count": 1976,
+      "bytes": 4961
+    },
+    "AS": {
+      "file": "AS.json",
+      "count": 1,
+      "bytes": 127
+    },
+    "AT": {
+      "file": "AT.json",
+      "count": 2217,
+      "bytes": 5497
+    },
+    "AU": {
+      "file": "AU.json",
+      "count": 3171,
+      "bytes": 8177
+    },
+    "AX": {
+      "file": "AX.json",
+      "count": 37,
+      "bytes": 224
+    },
+    "AZ": {
+      "file": "AZ.json",
+      "count": 1186,
+      "bytes": 3287
+    },
+    "BD": {
+      "file": "BD.json",
+      "count": 1349,
+      "bytes": 3353
+    },
+    "BE": {
+      "file": "BE.json",
+      "count": 1146,
+      "bytes": 2841
+    },
+    "BG": {
+      "file": "BG.json",
+      "count": 4359,
+      "bytes": 11297
+    },
+    "BM": {
+      "file": "BM.json",
+      "count": 81,
+      "bytes": 311
+    },
+    "BR": {
+      "file": "BR.json",
+      "count": 5525,
+      "bytes": 15693
+    },
+    "BY": {
+      "file": "BY.json",
+      "count": 3123,
+      "bytes": 8683
+    },
+    "CA": {
+      "file": "CA.json",
+      "count": 1653,
+      "bytes": 4859
+    },
+    "CC": {
+      "file": "CC.json",
+      "count": 1,
+      "bytes": 126
+    },
+    "CH": {
+      "file": "CH.json",
+      "count": 3362,
+      "bytes": 8649
+    },
+    "CL": {
+      "file": "CL.json",
+      "count": 346,
+      "bytes": 1059
+    },
+    "CN": {
+      "file": "CN.json",
+      "count": 2349,
+      "bytes": 6363
+    },
+    "CO": {
+      "file": "CO.json",
+      "count": 3681,
+      "bytes": 9587
+    },
+    "CR": {
+      "file": "CR.json",
+      "count": 473,
+      "bytes": 1249
+    },
+    "CX": {
+      "file": "CX.json",
+      "count": 1,
+      "bytes": 126
+    },
+    "CY": {
+      "file": "CY.json",
+      "count": 1125,
+      "bytes": 2781
+    },
+    "CZ": {
+      "file": "CZ.json",
+      "count": 2694,
+      "bytes": 7210
+    },
+    "DE": {
+      "file": "DE.json",
+      "count": 10813,
+      "bytes": 30855
+    },
+    "DK": {
+      "file": "DK.json",
+      "count": 1159,
+      "bytes": 2997
+    },
+    "DO": {
+      "file": "DO.json",
+      "count": 207,
+      "bytes": 637
+    },
+    "DZ": {
+      "file": "DZ.json",
+      "count": 3162,
+      "bytes": 7630
+    },
+    "EC": {
+      "file": "EC.json",
+      "count": 1225,
+      "bytes": 3267
+    },
+    "EE": {
+      "file": "EE.json",
+      "count": 5293,
+      "bytes": 13866
+    },
+    "ES": {
+      "file": "ES.json",
+      "count": 11150,
+      "bytes": 30527
+    },
+    "FI": {
+      "file": "FI.json",
+      "count": 3576,
+      "bytes": 9638
+    },
+    "FK": {
+      "file": "FK.json",
+      "count": 1,
+      "bytes": 133
+    },
+    "FM": {
+      "file": "FM.json",
+      "count": 4,
+      "bytes": 139
+    },
+    "FO": {
+      "file": "FO.json",
+      "count": 130,
+      "bytes": 367
+    },
+    "FR": {
+      "file": "FR.json",
+      "count": 20418,
+      "bytes": 74137
+    },
+    "GB": {
+      "file": "GB.json",
+      "count": 3002,
+      "bytes": 8765
+    },
+    "GF": {
+      "file": "GF.json",
+      "count": 77,
+      "bytes": 375
+    },
+    "GG": {
+      "file": "GG.json",
+      "count": 10,
+      "bytes": 155
+    },
+    "GI": {
+      "file": "GI.json",
+      "count": 1,
+      "bytes": 133
+    },
+    "GL": {
+      "file": "GL.json",
+      "count": 33,
+      "bytes": 211
+    },
+    "GP": {
+      "file": "GP.json",
+      "count": 105,
+      "bytes": 443
+    },
+    "GS": {
+      "file": "GS.json",
+      "count": 1,
+      "bytes": 133
+    },
+    "GT": {
+      "file": "GT.json",
+      "count": 548,
+      "bytes": 1301
+    },
+    "GU": {
+      "file": "GU.json",
+      "count": 21,
+      "bytes": 184
+    },
+    "HK": {
+      "file": "HK.json",
+      "count": 1,
+      "bytes": 132
+    },
+    "HM": {
+      "file": "HM.json",
+      "count": 1,
+      "bytes": 126
+    },
+    "HN": {
+      "file": "HN.json",
+      "count": 37,
+      "bytes": 228
+    },
+    "HR": {
+      "file": "HR.json",
+      "count": 309,
+      "bytes": 921
+    },
+    "HT": {
+      "file": "HT.json",
+      "count": 230,
+      "bytes": 734
+    },
+    "HU": {
+      "file": "HU.json",
+      "count": 3046,
+      "bytes": 7741
+    },
+    "ID": {
+      "file": "ID.json",
+      "count": 8266,
+      "bytes": 22694
+    },
+    "IE": {
+      "file": "IE.json",
+      "count": 139,
+      "bytes": 463
+    },
+    "IM": {
+      "file": "IM.json",
+      "count": 9,
+      "bytes": 153
+    },
+    "IN": {
+      "file": "IN.json",
+      "count": 19238,
+      "bytes": 54768
+    },
+    "IO": {
+      "file": "IO.json",
+      "count": 1,
+      "bytes": 133
+    },
+    "IS": {
+      "file": "IS.json",
+      "count": 195,
+      "bytes": 495
+    },
+    "IT": {
+      "file": "IT.json",
+      "count": 4735,
+      "bytes": 12118
+    },
+    "JE": {
+      "file": "JE.json",
+      "count": 4,
+      "bytes": 137
+    },
+    "JP": {
+      "file": "JP.json",
+      "count": 142577,
+      "bytes": 403502
+    },
+    "KE": {
+      "file": "KE.json",
+      "count": 877,
+      "bytes": 2277
+    },
+    "KR": {
+      "file": "KR.json",
+      "count": 34249,
+      "bytes": 89575
+    },
+    "LI": {
+      "file": "LI.json",
+      "count": 13,
+      "bytes": 167
+    },
+    "LK": {
+      "file": "LK.json",
+      "count": 1833,
+      "bytes": 4902
+    },
+    "LT": {
+      "file": "LT.json",
+      "count": 2023,
+      "bytes": 5338
+    },
+    "LU": {
+      "file": "LU.json",
+      "count": 4330,
+      "bytes": 11182
+    },
+    "LV": {
+      "file": "LV.json",
+      "count": 697,
+      "bytes": 2074
+    },
+    "MA": {
+      "file": "MA.json",
+      "count": 1325,
+      "bytes": 3470
+    },
+    "MC": {
+      "file": "MC.json",
+      "count": 1,
+      "bytes": 127
+    },
+    "MD": {
+      "file": "MD.json",
+      "count": 1215,
+      "bytes": 3303
+    },
+    "MH": {
+      "file": "MH.json",
+      "count": 2,
+      "bytes": 131
+    },
+    "MK": {
+      "file": "MK.json",
+      "count": 220,
+      "bytes": 608
+    },
+    "MO": {
+      "file": "MO.json",
+      "count": 1,
+      "bytes": 132
+    },
+    "MP": {
+      "file": "MP.json",
+      "count": 3,
+      "bytes": 135
+    },
+    "MQ": {
+      "file": "MQ.json",
+      "count": 95,
+      "bytes": 439
+    },
+    "MT": {
+      "file": "MT.json",
+      "count": 73,
+      "bytes": 310
+    },
+    "MW": {
+      "file": "MW.json",
+      "count": 491,
+      "bytes": 1378
+    },
+    "MX": {
+      "file": "MX.json",
+      "count": 32448,
+      "bytes": 88351
+    },
+    "MY": {
+      "file": "MY.json",
+      "count": 2757,
+      "bytes": 7318
+    },
+    "NC": {
+      "file": "NC.json",
+      "count": 50,
+      "bytes": 244
+    },
+    "NF": {
+      "file": "NF.json",
+      "count": 1,
+      "bytes": 126
+    },
+    "NL": {
+      "file": "NL.json",
+      "count": 4086,
+      "bytes": 10321
+    },
+    "NO": {
+      "file": "NO.json",
+      "count": 5132,
+      "bytes": 13269
+    },
+    "NR": {
+      "file": "NR.json",
+      "count": 1,
+      "bytes": 127
+    },
+    "NU": {
+      "file": "NU.json",
+      "count": 1,
+      "bytes": 126
+    },
+    "NZ": {
+      "file": "NZ.json",
+      "count": 1737,
+      "bytes": 4301
+    },
+    "PA": {
+      "file": "PA.json",
+      "count": 729,
+      "bytes": 1785
+    },
+    "PE": {
+      "file": "PE.json",
+      "count": 2669,
+      "bytes": 6918
+    },
+    "PF": {
+      "file": "PF.json",
+      "count": 83,
+      "bytes": 320
+    },
+    "PH": {
+      "file": "PH.json",
+      "count": 2190,
+      "bytes": 5481
+    },
+    "PK": {
+      "file": "PK.json",
+      "count": 2560,
+      "bytes": 6754
+    },
+    "PL": {
+      "file": "PL.json",
+      "count": 20299,
+      "bytes": 55427
+    },
+    "PM": {
+      "file": "PM.json",
+      "count": 1,
+      "bytes": 127
+    },
+    "PN": {
+      "file": "PN.json",
+      "count": 1,
+      "bytes": 133
+    },
+    "PR": {
+      "file": "PR.json",
+      "count": 177,
+      "bytes": 577
+    },
+    "PT": {
+      "file": "PT.json",
+      "count": 197772,
+      "bytes": 535370
+    },
+    "PW": {
+      "file": "PW.json",
+      "count": 1,
+      "bytes": 127
+    },
+    "RE": {
+      "file": "RE.json",
+      "count": 151,
+      "bytes": 620
+    },
+    "RO": {
+      "file": "RO.json",
+      "count": 37914,
+      "bytes": 101596
+    },
+    "RS": {
+      "file": "RS.json",
+      "count": 1149,
+      "bytes": 3046
+    },
+    "RU": {
+      "file": "RU.json",
+      "count": 43538,
+      "bytes": 121740
+    },
+    "SE": {
+      "file": "SE.json",
+      "count": 18870,
+      "bytes": 52439
+    },
+    "SG": {
+      "file": "SG.json",
+      "count": 121135,
+      "bytes": 322517
+    },
+    "SI": {
+      "file": "SI.json",
+      "count": 556,
+      "bytes": 1404
+    },
+    "SJ": {
+      "file": "SJ.json",
+      "count": 8,
+      "bytes": 150
+    },
+    "SK": {
+      "file": "SK.json",
+      "count": 3480,
+      "bytes": 9470
+    },
+    "SM": {
+      "file": "SM.json",
+      "count": 10,
+      "bytes": 160
+    },
+    "TC": {
+      "file": "TC.json",
+      "count": 1,
+      "bytes": 133
+    },
+    "TH": {
+      "file": "TH.json",
+      "count": 771,
+      "bytes": 1997
+    },
+    "TR": {
+      "file": "TR.json",
+      "count": 2953,
+      "bytes": 7974
+    },
+    "UA": {
+      "file": "UA.json",
+      "count": 26579,
+      "bytes": 73003
+    },
+    "US": {
+      "file": "US.json",
+      "count": 41488,
+      "bytes": 113383
+    },
+    "UY": {
+      "file": "UY.json",
+      "count": 122,
+      "bytes": 441
+    },
+    "VA": {
+      "file": "VA.json",
+      "count": 1,
+      "bytes": 127
+    },
+    "VI": {
+      "file": "VI.json",
+      "count": 16,
+      "bytes": 176
+    },
+    "WF": {
+      "file": "WF.json",
+      "count": 3,
+      "bytes": 135
+    },
+    "WS": {
+      "file": "WS.json",
+      "count": 1,
+      "bytes": 133
+    },
+    "YT": {
+      "file": "YT.json",
+      "count": 11,
+      "bytes": 164
+    },
+    "ZA": {
+      "file": "ZA.json",
+      "count": 3266,
+      "bytes": 8441
+    }
+  }
+}

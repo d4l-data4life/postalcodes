@@ -1,0 +1,78 @@
+{
+  "name": "@d4l/postalcodes",
+  "version": "0.1.0",
+  "description": "Offline world-wide postal-code validation with per-country indexes. Works in Node, browsers, and React Native. Data from GeoNames (CC BY 4.0).",
+  "keywords": [
+    "postal",
+    "postcode",
+    "zip",
+    "zipcode",
+    "validation",
+    "validator",
+    "geonames",
+    "i18n",
+    "react-native",
+    "offline"
+  ],
+  "license": "MIT",
+  "author": "David Weese <david.weese@data4life.care>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d4l-data4life/postalcodes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/d4l-data4life/postalcodes/issues"
+  },
+  "homepage": "https://github.com/d4l-data4life/postalcodes#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "import": "./dist/node.mjs",
+      "require": "./dist/node.cjs"
+    },
+    "./data/*": "./data/*",
+    "./manifest": "./data/manifest.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "data",
+    "ATTRIBUTION.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test --import tsx test/smoke.test.ts",
+    "update-data": "tsx scripts/update.ts",
+    "download": "tsx scripts/download.ts",
+    "build-indexes": "tsx scripts/build-indexes.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "fflate": "^0.8.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.0",
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  }
+}

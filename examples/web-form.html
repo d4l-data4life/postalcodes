@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@d4l/postalcodes — web form example</title>
+    <style>
+      body { font: 15px/1.45 system-ui, sans-serif; max-width: 28rem; margin: 4rem auto; padding: 0 1rem; }
+      label { display: block; margin-top: 1.2rem; font-size: 0.85rem; color: #555; }
+      select, input { width: 100%; box-sizing: border-box; font: inherit; padding: 0.6rem 0.7rem; border-radius: 6px; border: 1px solid #ccc; }
+      input.ok      { border-color: #1a7f37; background: #eaffea; }
+      input.error   { border-color: #cf222e; background: #ffeaea; }
+      input.pending { border-color: #888; }
+      .hint { margin-top: 0.4rem; font-size: 0.8rem; color: #666; min-height: 1.2em; }
+      .credit { margin-top: 3rem; font-size: 0.8rem; color: #888; }
+      .credit a { color: inherit; }
+    </style>
+  </head>
+  <body>
+    <h1>Postal-code validator</h1>
+    <p>Pick a country, then type a postal code. Validation runs locally — no network.</p>
+
+    <label for="country">Country</label>
+    <select id="country">
+      <option value="US">United States</option>
+      <option value="DE">Germany</option>
+      <option value="GB">United Kingdom</option>
+      <option value="CA">Canada</option>
+      <option value="FR">France</option>
+      <option value="NL">Netherlands</option>
+    </select>
+
+    <label for="postal">Postal code</label>
+    <input id="postal" autocomplete="postal-code" autocapitalize="characters" spellcheck="false" />
+    <div class="hint" id="hint"></div>
+
+    <p class="credit">
+      Data &copy; <a href="https://www.geonames.org/">GeoNames</a> (CC BY 4.0).
+    </p>
+
+    <!--
+      Tiny ESM shim: load the runtime from a CDN and pull country data on demand
+      from the same package. In a real build you'd use your bundler (Vite,
+      webpack, esbuild) and `import` country JSON files statically or via
+      dynamic import.
+    -->
+    <script type="module">
+      import {
+        registerCountry,
+        isCountryLoaded,
+        validatePostalCode,
+      } from 'https://esm.sh/@d4l/postalcodes';
+
+      const country = document.getElementById('country');
+      const postal = document.getElementById('postal');
+      const hint = document.getElementById('hint');
+
+      async function ensureLoaded(cc) {
+        if (isCountryLoaded(cc)) return;
+        const res = await fetch(`https://esm.sh/@d4l/postalcodes/data/${cc}.json`);
+        if (!res.ok) throw new Error(`No data for ${cc}`);
+        registerCountry(await res.json());
+      }
+
+      async function revalidate() {
+        const cc = country.value;
+        try {
+          await ensureLoaded(cc);
+        } catch (e) {
+          postal.className = 'error';
+          hint.textContent = `Country ${cc} not supported`;
+          return;
+        }
+        const raw = postal.value;
+        if (!raw) {
+          postal.className = '';
+          hint.textContent = '';
+          return;
+        }
+        const r = validatePostalCode(cc, raw);
+        if (r.valid) {
+          postal.className = 'ok';
+          hint.textContent = 'valid';
+        } else if (!r.formatOk) {
+          postal.className = 'error';
+          hint.textContent = 'invalid characters for this country';
+        } else if (r.isPrefix) {
+          postal.className = 'pending';
+          hint.textContent = 'keep typing…';
+        } else {
+          postal.className = 'error';
+          hint.textContent = 'not a known postal code';
+        }
+      }
+
+      country.addEventListener('change', () => {
+        postal.value = '';
+        revalidate();
+      });
+      postal.addEventListener('input', revalidate);
+      revalidate();
+    </script>
+  </body>
+</html>
