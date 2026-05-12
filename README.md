@@ -4,6 +4,10 @@
 > browsers, and React Native. Sub-millisecond live validation **as the user
 > types**, with no network calls and no API keys.
 
+<p align="center">
+  <img src="./assets/demo.gif" alt="Postal code field cycling through idle, typing, valid, and invalid states" width="640" />
+</p>
+
 [![npm version](https://img.shields.io/npm/v/@d4l/postalcodes.svg)](https://www.npmjs.com/package/@d4l/postalcodes)
 [![bundle size](https://img.shields.io/bundlephobia/minzip/@d4l/postalcodes)](https://bundlephobia.com/package/@d4l/postalcodes)
 [![types: included](https://img.shields.io/npm/types/@d4l/postalcodes.svg)](./dist/index.d.ts)

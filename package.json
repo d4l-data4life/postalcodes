@@ -62,6 +62,7 @@
     "typecheck": "tsc --noEmit",
     "test": "node --test --import tsx test/smoke.test.ts",
     "update-data": "tsx scripts/update.ts",
+    "make-gif": "tsx scripts/make-demo-gif.ts",
     "download": "tsx scripts/download.ts",
     "build-indexes": "tsx scripts/build-indexes.ts",
     "prepublishOnly": "npm run build"
