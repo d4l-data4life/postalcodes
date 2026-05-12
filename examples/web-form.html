@@ -57,7 +57,7 @@
 
       async function ensureLoaded(cc) {
         if (isCountryLoaded(cc)) return;
-        const res = await fetch(`https://esm.sh/@d4l/postalcodes/data/${cc}.json`);
+        const res = await fetch(`https://unpkg.com/@d4l/postalcodes/data/${cc}.json`);
         if (!res.ok) throw new Error(`No data for ${cc}`);
         registerCountry(await res.json());
       }

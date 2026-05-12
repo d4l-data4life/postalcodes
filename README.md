@@ -125,7 +125,7 @@ At runtime, validation is:
 - `O(L)` structural check against the per-position char-class (rejects garbage early)
 - `O(log N · L)` binary search over the sorted buffer for exact match and prefix
 
-`N` is the number of codes for the country (US ≈ 42k, DE ≈ 16k); `L` is the
+`N` is the number of codes for the country (US ≈ 42k, DE ≈ 28k); `L` is the
 code length. In practice, validation is well under a millisecond.
 
 ## Updating the data
