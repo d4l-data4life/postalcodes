@@ -39,17 +39,17 @@ import { validatePostalCode } from '@d4l/postalcodes';
 
 await loadCountry('US');
 
-validatePostalCode('US', '');         // → valid: false, isPrefix: true,  formatOk: true
-validatePostalCode('US', '9');        // → valid: false, isPrefix: true,  formatOk: true
-validatePostalCode('US', '902');      // → valid: false, isPrefix: true,  formatOk: true
-validatePostalCode('US', '90210');    // → valid: true,  isPrefix: true,  formatOk: true
-validatePostalCode('US', '9XYZ0');    // → valid: false, isPrefix: false, formatOk: false
-validatePostalCode('US', '99999');    // → valid: false, isPrefix: false, formatOk: true (well-formed but unknown)
+validatePostalCode('US', '');         // → verdict: 'partial'    (still typing)
+validatePostalCode('US', '9');        // → verdict: 'partial'    (still typing)
+validatePostalCode('US', '902');      // → verdict: 'partial'    (still typing)
+validatePostalCode('US', '90210');    // → verdict: 'valid'      (Beverly Hills)
+validatePostalCode('US', '99999');    // → verdict: 'unknown'    (well-formed but not in dataset)
+validatePostalCode('US', '9XYZ0');    // → verdict: 'malformed'  (format violation)
 ```
 
-The `isPrefix` flag is the trick that makes input fields feel right: the field
-stays neutral while the user is still typing and only goes red when the input
-can no longer become a valid code. No more inputs flickering green-then-red on
+The `'partial'` verdict is the trick that makes input fields feel right: the
+field stays neutral while the user is still typing and only goes red when the
+input can no longer become a valid code. No more flickering green-then-red on
 every keystroke.
 
 ## How it stacks up
@@ -96,15 +96,15 @@ import { validatePostalCode } from '@d4l/postalcodes';
 await loadCountry('US');
 
 validatePostalCode('US', '90210');
-// → { valid: true, isPrefix: true, formatOk: true, normalized: '90210' }
+// → { verdict: 'valid', normalized: '90210' }
 ```
 
 ## Quick start — React Native / browser
 
-Metro and modern web bundlers handle JSON imports natively, so the cleanest
-pattern is to register each country you care about explicitly. **Only the data
-files you import are bundled into your app** — there's no per-country tax for
-countries you don't use.
+Two options, depending on how much country data you want to ship.
+
+**Cherry-pick** — register only the countries you need. Bundlers (Metro,
+webpack, …) tree-shake the rest, so you only pay for what you import.
 
 ```ts
 import US from '@d4l/postalcodes/data/US.json';
@@ -114,7 +114,17 @@ import { registerCountry, validatePostalCode } from '@d4l/postalcodes';
 registerCountry(US);
 registerCountry(DE);
 
-validatePostalCode('DE', '10117').valid; // true (Berlin)
+validatePostalCode('DE', '10117').verdict; // 'valid' (Berlin)
+```
+
+**Bulk** — `@d4l/postalcodes/bundled` exposes every country with lazy,
+on-demand registration. Use this when you don't know which countries the user
+might pick at runtime.
+
+```ts
+import { validatePostalCode, SUPPORTED_COUNTRIES } from '@d4l/postalcodes/bundled';
+
+validatePostalCode('DE', '10117').verdict; // 'valid' — DE registered automatically
 ```
 
 There's a complete React Native example in
@@ -126,43 +136,67 @@ runnable browser demo in [`examples/web-form.html`](./examples/web-form.html).
 ### `validatePostalCode(country, raw): ValidationResult`
 
 ```ts
+type ValidationVerdict = 'valid' | 'unknown' | 'partial' | 'malformed';
+
 interface ValidationResult {
-  valid: boolean;     // complete and present in the country's index
-  isPrefix: boolean;  // could still grow into a valid code (true when valid is true)
-  formatOk: boolean;  // matches per-position char-class (cheap structural check)
+  verdict: ValidationVerdict;
   normalized: string; // uppercase, separators stripped
 }
 ```
+
+| verdict      | meaning                                                | typical UI |
+| ------------ | ------------------------------------------------------ | ---------- |
+| `'valid'`    | complete code, present in the country's index          | green      |
+| `'unknown'`  | well-formed but not in the dataset                     | soft warn  |
+| `'partial'`  | could still grow into a valid code (still typing)      | neutral    |
+| `'malformed'`| violates the country's structural pattern              | red        |
 
 Input is normalized internally — spaces and hyphens stripped, letters
 uppercased — so `validatePostalCode('CA', 'k1a 0b1')` and
 `validatePostalCode('CA', 'K1A-0B1')` behave identically.
 
-Throws `UnknownCountryError` if you forgot to register that country.
+Throws `UnknownCountryError` if you forgot to register that country (the main
+entry only; the `./bundled` wrapper returns `undefined` instead of throwing).
 
 ### Driving an `<input>` field
 
 ```ts
 function uiState(country: string, raw: string) {
   if (!raw) return 'idle';
-  const r = validatePostalCode(country, raw);
-  if (r.valid)     return 'valid';      // green
-  if (!r.formatOk) return 'invalid';    // red — invalid characters
-  if (r.isPrefix)  return 'typing';     // neutral
-  return 'invalid';                     // red — well-formed but not a known code
+  switch (validatePostalCode(country, raw).verdict) {
+    case 'valid':     return 'valid';   // green
+    case 'unknown':   return 'warn';    // amber — accept, but flag for review
+    case 'partial':   return 'typing';  // neutral
+    case 'malformed': return 'invalid'; // red
+  }
 }
+```
+
+For a hard "can the user submit" gate, the simplest expression is the regex:
+
+```ts
+import { regexForCountry, normalizePostalCode } from '@d4l/postalcodes';
+const ok = regexForCountry(country).test(normalizePostalCode(raw));
 ```
 
 ### Other exports
 
-- `isValidPostalCode(country, raw): boolean` — sugar for `validate(...).valid`
-- `isValidPrefix(country, raw): boolean` — sugar for `validate(...).isPrefix`
+- `isValidPostalCode(country, raw): boolean` — sugar for `verdict === 'valid'`
+- `isAcceptablePostalCode(country, raw): boolean` — `verdict !== 'malformed'`
+- `getCountryFormat(country): CountryFormat | undefined` — `{ minLen, maxLen, charsets, digitsOnly, lettersOnly, hasDigits, hasLetters }`. Useful for configuring an `<input>` (numeric keyboard, maxLength, autocapitalize) without first running a validation.
+- `regexForCountry(code: string): RegExp` — anchored structural regex (handy for `<input pattern>`)
+- `normalizePostalCode(raw: string): string`
 - `registerCountry(data: CountryData): void`
 - `unregisterCountry(code: string): boolean`
 - `isCountryLoaded(code: string): boolean`
 - `loadedCountries(): string[]`
-- `normalizePostalCode(raw: string): string`
-- `regexForCountry(code: string): RegExp` — derive a structural regex (handy for `<input pattern>`)
+
+From `@d4l/postalcodes/bundled` (static-bundler-friendly, every country lazily registered):
+
+- `validatePostalCode`, `isValidPostalCode`, `isAcceptablePostalCode`, `getCountryFormat`, `regexForCountry`, `normalizePostalCode` — same signatures as the main entry, but each lazily calls `ensureCountry(...)` and returns `undefined` (instead of throwing) when the country isn't bundled in this build
+- `ensureCountry(code: string): boolean` — lazily register one country
+- `registerAllCountries(): readonly string[]` — register every bundled country eagerly
+- `SUPPORTED_COUNTRIES: readonly string[]` — every ISO code this build ships
 
 From `@d4l/postalcodes/node` (Node-only convenience):
 

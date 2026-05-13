@@ -61,6 +61,8 @@ import {
   validatePostalCode as packageValidate,
   getCountryFormat as packageGetCountryFormat,
 } from './validator.js';
+import { regexForCountry as packageRegexForCountry } from './regex.js';
+import { normalizePostalCode } from './normalize.js';
 import type { CountryData, CountryFormat, ValidationResult } from './types.js';
 
 declare const require: (path: string) => CountryData;
@@ -103,6 +105,13 @@ export function getCountryFormat(country: string): CountryFormat | undefined {
   if (!country || !ensureCountry(country)) return undefined;
   return packageGetCountryFormat(country);
 }
+
+export function regexForCountry(country: string): RegExp | undefined {
+  if (!country || !ensureCountry(country)) return undefined;
+  return packageRegexForCountry(country);
+}
+
+export { normalizePostalCode };
 
 export type { CountryFormat, ValidationResult, ValidationVerdict } from './types.js';
 export { UnknownCountryError } from './validator.js';
@@ -162,6 +171,11 @@ function getCountryFormat(country) {
   return main.getCountryFormat(country);
 }
 
+function regexForCountry(country) {
+  if (!country || !ensureCountry(country)) return undefined;
+  return main.regexForCountry(country);
+}
+
 exports.SUPPORTED_COUNTRIES = SUPPORTED_COUNTRIES;
 exports.ensureCountry = ensureCountry;
 exports.registerAllCountries = registerAllCountries;
@@ -169,6 +183,8 @@ exports.validatePostalCode = validatePostalCode;
 exports.isValidPostalCode = isValidPostalCode;
 exports.isAcceptablePostalCode = isAcceptablePostalCode;
 exports.getCountryFormat = getCountryFormat;
+exports.regexForCountry = regexForCountry;
+exports.normalizePostalCode = main.normalizePostalCode;
 exports.UnknownCountryError = main.UnknownCountryError;
 `;
 }
@@ -188,6 +204,8 @@ export const {
   isValidPostalCode,
   isAcceptablePostalCode,
   getCountryFormat,
+  regexForCountry,
+  normalizePostalCode,
   UnknownCountryError,
 } = bundled;
 export default bundled;
@@ -217,6 +235,14 @@ export declare function isAcceptablePostalCode(country: string, raw: string): bo
  * the country.
  */
 export declare function getCountryFormat(country: string): CountryFormat | undefined;
+/**
+ * Anchored regex matching any complete, normalized postal code for the country.
+ * Pair with \`normalizePostalCode\` (which uppercases and strips separators) to
+ * test a raw input. Returns \`undefined\` when the country isn't bundled.
+ */
+export declare function regexForCountry(country: string): RegExp | undefined;
+/** Uppercase \`raw\` and strip whitespace/hyphens; matches the form the regex expects. */
+export declare function normalizePostalCode(raw: string): string;
 export { UnknownCountryError } from './index.js';
 export type { CountryFormat, ValidationResult, ValidationVerdict } from './index.js';
 `;

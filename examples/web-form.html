@@ -78,18 +78,23 @@
           return;
         }
         const r = validatePostalCode(cc, raw);
-        if (r.valid) {
-          postal.className = 'ok';
-          hint.textContent = 'valid';
-        } else if (!r.formatOk) {
-          postal.className = 'error';
-          hint.textContent = 'invalid characters for this country';
-        } else if (r.isPrefix) {
-          postal.className = 'pending';
-          hint.textContent = 'keep typing…';
-        } else {
-          postal.className = 'error';
-          hint.textContent = 'not a known postal code';
+        switch (r.verdict) {
+          case 'valid':
+            postal.className = 'ok';
+            hint.textContent = 'valid';
+            break;
+          case 'partial':
+            postal.className = 'pending';
+            hint.textContent = 'keep typing…';
+            break;
+          case 'unknown':
+            postal.className = 'error';
+            hint.textContent = 'not a known postal code';
+            break;
+          case 'malformed':
+            postal.className = 'error';
+            hint.textContent = 'invalid characters for this country';
+            break;
         }
       }
 

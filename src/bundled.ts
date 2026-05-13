@@ -6,6 +6,8 @@ import {
   validatePostalCode as packageValidate,
   getCountryFormat as packageGetCountryFormat,
 } from './validator.js';
+import { regexForCountry as packageRegexForCountry } from './regex.js';
+import { normalizePostalCode } from './normalize.js';
 import type { CountryData, CountryFormat, ValidationResult } from './types.js';
 
 declare const require: (path: string) => CountryData;
@@ -168,6 +170,13 @@ export function getCountryFormat(country: string): CountryFormat | undefined {
   if (!country || !ensureCountry(country)) return undefined;
   return packageGetCountryFormat(country);
 }
+
+export function regexForCountry(country: string): RegExp | undefined {
+  if (!country || !ensureCountry(country)) return undefined;
+  return packageRegexForCountry(country);
+}
+
+export { normalizePostalCode };
 
 export type { CountryFormat, ValidationResult, ValidationVerdict } from './types.js';
 export { UnknownCountryError } from './validator.js';

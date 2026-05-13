@@ -43,13 +43,13 @@ export function PostalCodeField({ country }: { country: keyof typeof COUNTRIES }
   // visually — let the user see what they typed. Validation normalizes internally.
   const tone = !raw
     ? 'neutral'
-    : result.valid
+    : result.verdict === 'valid'
       ? 'ok'
-      : !result.formatOk
+      : result.verdict === 'malformed'
         ? 'error'
-        : result.isPrefix
+        : result.verdict === 'partial'
           ? 'pending'
-          : 'error';
+          : 'error'; // 'unknown' — well-formed but not in the dataset
 
   return (
     <View style={styles.row}>
@@ -67,8 +67,8 @@ export function PostalCodeField({ country }: { country: keyof typeof COUNTRIES }
         {!raw && 'enter a postal code'}
         {raw && tone === 'ok' && 'valid'}
         {raw && tone === 'pending' && 'keep typing…'}
-        {raw && tone === 'error' && !result.formatOk && 'invalid characters'}
-        {raw && tone === 'error' && result.formatOk && 'not a known postal code'}
+        {raw && tone === 'error' && result.verdict === 'malformed' && 'invalid characters'}
+        {raw && tone === 'error' && result.verdict === 'unknown' && 'not a known postal code'}
       </Text>
     </View>
   );
