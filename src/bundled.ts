@@ -2,8 +2,11 @@
 // Source: data/manifest.json (121 countries).
 
 import { isCountryLoaded, registerCountry } from './registry.js';
-import { validatePostalCode as packageValidate } from './validator.js';
-import type { CountryData, ValidationResult } from './types.js';
+import {
+  validatePostalCode as packageValidate,
+  getCountryFormat as packageGetCountryFormat,
+} from './validator.js';
+import type { CountryData, CountryFormat, ValidationResult } from './types.js';
 
 declare const require: (path: string) => CountryData;
 
@@ -153,8 +156,18 @@ export function validatePostalCode(country: string, raw: string): ValidationResu
 }
 
 export function isValidPostalCode(country: string, raw: string): boolean {
-  return validatePostalCode(country, raw)?.valid === true;
+  return validatePostalCode(country, raw)?.verdict === 'valid';
 }
 
-export type { ValidationResult };
+export function isAcceptablePostalCode(country: string, raw: string): boolean {
+  const result = validatePostalCode(country, raw);
+  return result === undefined || result.verdict !== 'malformed';
+}
+
+export function getCountryFormat(country: string): CountryFormat | undefined {
+  if (!country || !ensureCountry(country)) return undefined;
+  return packageGetCountryFormat(country);
+}
+
+export type { CountryFormat, ValidationResult, ValidationVerdict } from './types.js';
 export { UnknownCountryError } from './validator.js';

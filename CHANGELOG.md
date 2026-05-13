@@ -9,11 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `isAcceptablePostalCode(country, raw)` — boolean helper for the "can the user proceed" gate. True when the input is structurally well-formed regardless of dataset presence.
+- `getCountryFormat(country)` — returns `{ minLen, maxLen, charsets, digitsOnly, lettersOnly, hasDigits, hasLetters }` for a registered country. Useful for configuring an input field (max length, numeric keyboard, capitalization) without first running a validation. Returns `undefined` when no data is registered for the country.
+
 ### Changed
+
+- **Breaking:** `ValidationResult` now returns a single `verdict: 'valid' | 'unknown' | 'partial' | 'malformed'` discriminator in place of the previous `{ valid, isPrefix, formatOk }` triple. The verdict maps directly to UI state — hard-fail on `'malformed'`, soft-warn on `'unknown'`, suppress errors on `'partial'`, accept on `'valid'`.
+- `isValidPostalCode` semantics unchanged (still strict: only `'valid'`).
 
 ### Deprecated
 
 ### Removed
+
+- `isValidPrefix(country, raw)` — superseded by `validatePostalCode(...).verdict === 'partial'`.
 
 ### Fixed
 

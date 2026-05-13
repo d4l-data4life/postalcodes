@@ -8,7 +8,8 @@ import {
   isCountryLoaded,
   validatePostalCode,
   isValidPostalCode,
-  isValidPrefix,
+  isAcceptablePostalCode,
+  getCountryFormat,
   regexForCountry,
   UnknownCountryError,
 } from '../src/index.js';
@@ -53,36 +54,37 @@ describe('binary format round-trip', () => {
   });
 });
 
-describe('validatePostalCode result shape', () => {
-  it('reports prefix correctly while user types', () => {
+describe('validatePostalCode verdicts', () => {
+  it('reports each verdict for the four UX cases', () => {
     registerCountry(makeFixed('XF', ['00501', '10001', '20500', '90210']));
     try {
-      const empty = validatePostalCode('XF', '');
-      assert.deepEqual(empty, { valid: false, isPrefix: true, formatOk: true, normalized: '' });
+      assert.deepEqual(
+        validatePostalCode('XF', ''),
+        { verdict: 'partial', normalized: '' },
+        'empty input is "partial" so the user can keep typing without errors',
+      );
 
-      const partial = validatePostalCode('XF', '902');
-      assert.equal(partial.valid, false);
-      assert.equal(partial.isPrefix, true);
-      assert.equal(partial.formatOk, true);
+      assert.equal(validatePostalCode('XF', '902').verdict, 'partial', 'prefix of a known code');
 
-      const dead = validatePostalCode('XF', '977');
-      assert.equal(dead.valid, false);
-      assert.equal(dead.isPrefix, false);
-      assert.equal(dead.formatOk, true);
+      assert.equal(
+        validatePostalCode('XF', '977').verdict,
+        'unknown',
+        'format ok, no known code starts with this — soft warning territory',
+      );
 
-      const bad = validatePostalCode('XF', '9X');
-      assert.equal(bad.valid, false);
-      assert.equal(bad.formatOk, false);
+      assert.equal(
+        validatePostalCode('XF', '9X').verdict,
+        'malformed',
+        'digit position with a letter is a format violation',
+      );
 
-      const tooLong = validatePostalCode('XF', '902109');
-      assert.equal(tooLong.valid, false);
-      assert.equal(tooLong.isPrefix, false);
-      assert.equal(tooLong.formatOk, false);
+      assert.equal(
+        validatePostalCode('XF', '902109').verdict,
+        'malformed',
+        'past the max length is a format violation',
+      );
 
-      const complete = validatePostalCode('XF', '90210');
-      assert.equal(complete.valid, true);
-      assert.equal(complete.isPrefix, true);
-      assert.equal(complete.formatOk, true);
+      assert.equal(validatePostalCode('XF', '90210').verdict, 'valid', 'exact known code');
     } finally {
       unregisterCountry('XF');
     }
@@ -142,14 +144,58 @@ describe('regexForCountry', () => {
   });
 });
 
-describe('isValidPrefix', () => {
-  it('answers true when the input could grow into a code', () => {
+describe('getCountryFormat', () => {
+  it('reports digitsOnly for pure-digit countries', () => {
+    registerCountry(makeFixed('XF', ['10001', '20500', '90210']));
+    try {
+      const fmt = getCountryFormat('XF');
+      assert.ok(fmt);
+      assert.equal(fmt.minLen, 5);
+      assert.equal(fmt.maxLen, 5);
+      assert.equal(fmt.charsets, 'DDDDD');
+      assert.equal(fmt.digitsOnly, true);
+      assert.equal(fmt.lettersOnly, false);
+      assert.equal(fmt.hasDigits, true);
+      assert.equal(fmt.hasLetters, false);
+    } finally {
+      unregisterCountry('XF');
+    }
+  });
+
+  it('reports mixed when positions allow alphanumeric', () => {
+    registerCountry(makeVariable('XM', ['A1', 'A1A0B1']));
+    try {
+      const fmt = getCountryFormat('XM');
+      assert.ok(fmt);
+      assert.equal(fmt.maxLen, 6);
+      assert.equal(fmt.charsets, 'XXXXXX');
+      assert.equal(fmt.digitsOnly, false);
+      assert.equal(fmt.lettersOnly, false);
+      assert.equal(fmt.hasDigits, true);
+      assert.equal(fmt.hasLetters, true);
+    } finally {
+      unregisterCountry('XM');
+    }
+  });
+
+  it('returns undefined for unregistered countries', () => {
+    assert.equal(getCountryFormat('ZZ'), undefined);
+  });
+});
+
+describe('isAcceptablePostalCode', () => {
+  it('passes for both known and dataset-missing codes, fails only on format violations', () => {
     registerCountry(makeFixed('XF', ['90210', '90211', '90212']));
     try {
-      assert.equal(isValidPrefix('XF', '9'), true);
-      assert.equal(isValidPrefix('XF', '902'), true);
-      assert.equal(isValidPrefix('XF', '903'), false);
-      assert.equal(isValidPrefix('XF', '90210'), true);
+      // Known: obviously acceptable.
+      assert.equal(isAcceptablePostalCode('XF', '90210'), true);
+      // Format ok, not in dataset — the dataset is not exhaustive, so the
+      // caller should still let the user proceed (soft warning territory).
+      assert.equal(isAcceptablePostalCode('XF', '99999'), true);
+      // Letter where a digit is expected — hard fail.
+      assert.equal(isAcceptablePostalCode('XF', '9021A'), false);
+      // Too long — hard fail.
+      assert.equal(isAcceptablePostalCode('XF', '902100'), false);
     } finally {
       unregisterCountry('XF');
     }

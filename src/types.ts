@@ -22,15 +22,51 @@ export interface CountryData {
   data: string;
 }
 
+/**
+ * Discriminated outcome of {@link validatePostalCode}. Drives UI state in a
+ * single switch:
+ *
+ *   - `'valid'`     → complete, known postal code present in the reference
+ *                     dataset. Accept.
+ *   - `'unknown'`   → input matches the country's structural pattern but is
+ *                     not in the dataset. The dataset is not exhaustive, so
+ *                     callers should treat this as a soft warning rather than
+ *                     a hard validation failure.
+ *   - `'partial'`   → format is correct so far AND the input could still grow
+ *                     into a known code (it is a prefix of one). Use to
+ *                     suppress errors while the user is typing.
+ *   - `'malformed'` → input violates the country's structural pattern
+ *                     (digit-vs-letter classes or length bounds). Hard fail.
+ */
+export type ValidationVerdict = 'valid' | 'unknown' | 'partial' | 'malformed';
+
 export interface ValidationResult {
-  /** Input matches a complete, known postal code for the country. */
-  valid: boolean;
-  /** Input is a prefix of at least one known postal code (true when `valid` is true). */
-  isPrefix: boolean;
-  /** Input matches the country's structural format (digits vs letters at each position, length bounds). */
-  formatOk: boolean;
+  /** See {@link ValidationVerdict}. */
+  verdict: ValidationVerdict;
   /** Normalized form actually used for the lookup (uppercase, separators stripped). */
   normalized: string;
+}
+
+/**
+ * Structural description of a country's postal codes — useful for configuring
+ * an input field up front (max length, keyboard type, …) without having to
+ * validate anything first.
+ */
+export interface CountryFormat {
+  /** Min normalized length observed in the dataset. */
+  minLen: number;
+  /** Max normalized length observed in the dataset. */
+  maxLen: number;
+  /** Per-position character class: one of `D` / `A` / `X` per position. Length = `maxLen`. */
+  charsets: string;
+  /** True when every position only accepts digits 0-9. Drives `numeric` keyboard. */
+  digitsOnly: boolean;
+  /** True when every position only accepts letters A-Z. */
+  lettersOnly: boolean;
+  /** True when at least one position accepts digits. */
+  hasDigits: boolean;
+  /** True when at least one position accepts letters. */
+  hasLetters: boolean;
 }
 
 export interface DecodedCountry {

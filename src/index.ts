@@ -1,4 +1,10 @@
-export type { CountryData, ValidationResult, Manifest } from './types.js';
+export type {
+  CountryData,
+  CountryFormat,
+  ValidationResult,
+  ValidationVerdict,
+  Manifest,
+} from './types.js';
 
 export {
   registerCountry,
@@ -10,7 +16,8 @@ export {
 export {
   validatePostalCode,
   isValidPostalCode,
-  isValidPrefix,
+  isAcceptablePostalCode,
+  getCountryFormat,
   UnknownCountryError,
 } from './validator.js';
 

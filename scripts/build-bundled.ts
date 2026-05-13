@@ -57,8 +57,11 @@ function renderSource(codes: readonly string[]): string {
 // Source: data/manifest.json (${codes.length} countries).
 
 import { isCountryLoaded, registerCountry } from './registry.js';
-import { validatePostalCode as packageValidate } from './validator.js';
-import type { CountryData, ValidationResult } from './types.js';
+import {
+  validatePostalCode as packageValidate,
+  getCountryFormat as packageGetCountryFormat,
+} from './validator.js';
+import type { CountryData, CountryFormat, ValidationResult } from './types.js';
 
 declare const require: (path: string) => CountryData;
 
@@ -88,10 +91,20 @@ export function validatePostalCode(country: string, raw: string): ValidationResu
 }
 
 export function isValidPostalCode(country: string, raw: string): boolean {
-  return validatePostalCode(country, raw)?.valid === true;
+  return validatePostalCode(country, raw)?.verdict === 'valid';
 }
 
-export type { ValidationResult };
+export function isAcceptablePostalCode(country: string, raw: string): boolean {
+  const result = validatePostalCode(country, raw);
+  return result === undefined || result.verdict !== 'malformed';
+}
+
+export function getCountryFormat(country: string): CountryFormat | undefined {
+  if (!country || !ensureCountry(country)) return undefined;
+  return packageGetCountryFormat(country);
+}
+
+export type { CountryFormat, ValidationResult, ValidationVerdict } from './types.js';
 export { UnknownCountryError } from './validator.js';
 `;
 }
@@ -136,7 +149,17 @@ function validatePostalCode(country, raw) {
 
 function isValidPostalCode(country, raw) {
   const result = validatePostalCode(country, raw);
-  return result !== undefined && result.valid === true;
+  return result !== undefined && result.verdict === 'valid';
+}
+
+function isAcceptablePostalCode(country, raw) {
+  const result = validatePostalCode(country, raw);
+  return result === undefined || result.verdict !== 'malformed';
+}
+
+function getCountryFormat(country) {
+  if (!country || !ensureCountry(country)) return undefined;
+  return main.getCountryFormat(country);
 }
 
 exports.SUPPORTED_COUNTRIES = SUPPORTED_COUNTRIES;
@@ -144,6 +167,8 @@ exports.ensureCountry = ensureCountry;
 exports.registerAllCountries = registerAllCountries;
 exports.validatePostalCode = validatePostalCode;
 exports.isValidPostalCode = isValidPostalCode;
+exports.isAcceptablePostalCode = isAcceptablePostalCode;
+exports.getCountryFormat = getCountryFormat;
 exports.UnknownCountryError = main.UnknownCountryError;
 `;
 }
@@ -161,6 +186,8 @@ export const {
   registerAllCountries,
   validatePostalCode,
   isValidPostalCode,
+  isAcceptablePostalCode,
+  getCountryFormat,
   UnknownCountryError,
 } = bundled;
 export default bundled;
@@ -169,14 +196,28 @@ export default bundled;
 
 function renderDts(): string {
   return `${HEADER}
-import type { ValidationResult } from './index.js';
+import type { CountryFormat, ValidationResult } from './index.js';
 
 export declare const SUPPORTED_COUNTRIES: readonly string[];
 export declare function ensureCountry(code: string): boolean;
 export declare function registerAllCountries(): readonly string[];
 export declare function validatePostalCode(country: string, raw: string): ValidationResult | undefined;
+/** True iff \`raw\` is a complete, known postal code in the reference dataset. */
 export declare function isValidPostalCode(country: string, raw: string): boolean;
+/**
+ * True iff \`raw\` is structurally well-formed for the country (or the country
+ * isn't shipped by this build so no validation is possible). Use this for the
+ * "can the user proceed" gate.
+ */
+export declare function isAcceptablePostalCode(country: string, raw: string): boolean;
+/**
+ * Structural description of the country's postal codes (length bounds, digit/
+ * letter classes). Useful for configuring an input field — max length, keyboard
+ * type, auto-capitalize. Returns \`undefined\` when this build doesn't bundle
+ * the country.
+ */
+export declare function getCountryFormat(country: string): CountryFormat | undefined;
 export { UnknownCountryError } from './index.js';
-export type { ValidationResult };
+export type { CountryFormat, ValidationResult, ValidationVerdict } from './index.js';
 `;
 }
