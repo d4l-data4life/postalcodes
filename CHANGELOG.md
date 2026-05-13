@@ -9,8 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- `./bundled` entry - static-bundler-friendly variant that statically `require`s every per-country JSON file shipped in `data/`. Exposes `ensureCountry`, `registerAllCountries`, `validatePostalCode`, `isValidPostalCode`, and `SUPPORTED_COUNTRIES`. Lets React-Native / webpack / Rollup consumers drop their own loader map.
-
 ### Changed
 
 ### Deprecated
@@ -20,6 +18,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+## [v0.2.0] - 2026-05-13
+
+### Added
+
+- `./bundled` entry - static-bundler-friendly variant that statically `require`s every per-country JSON file shipped in `data/`. Exposes `ensureCountry`, `registerAllCountries`, `validatePostalCode`, `isValidPostalCode`, and `SUPPORTED_COUNTRIES`. Lets React-Native / webpack / Rollup consumers drop their own loader map.
 
 ## [v0.1.0] - 2026-05-12
 
@@ -31,5 +35,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Per-country JSON data exposed under `./data/*` and indexed by `./manifest`.
 - Public API: `validatePostalCode`, `isValidPostalCode`, `isValidPrefix`, `normalizePostalCode`, `regexForCountry`, `registerCountry`, `unregisterCountry`, `isCountryLoaded`, `loadedCountries`.
 
-[Unreleased]: https://github.com/d4l-data4life/postalcodes/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/d4l-data4life/postalcodes/compare/v0.2.0...HEAD
+[v0.2.0]: https://github.com/d4l-data4life/postalcodes/compare/v0.1.0...v0.2.0
 [v0.1.0]: https://github.com/d4l-data4life/postalcodes/releases/tag/v0.1.0
