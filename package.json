@@ -43,6 +43,11 @@
       "import": "./dist/node.mjs",
       "require": "./dist/node.cjs"
     },
+    "./bundled": {
+      "types": "./dist/bundled.d.ts",
+      "import": "./dist/bundled.mjs",
+      "require": "./dist/bundled.cjs"
+    },
     "./data/*": "./data/*",
     "./manifest": "./data/manifest.json",
     "./package.json": "./package.json"
@@ -51,6 +56,7 @@
     "dist",
     "data",
     "ATTRIBUTION.md",
+    "CHANGELOG.md",
     "README.md",
     "LICENSE"
   ],
@@ -58,13 +64,14 @@
     "node": ">=20"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tsx scripts/build-bundled.ts",
     "typecheck": "tsc --noEmit",
     "test": "node --test --import tsx test/smoke.test.ts",
     "update-data": "tsx scripts/update.ts",
     "make-gif": "tsx scripts/make-demo-gif.ts",
     "download": "tsx scripts/download.ts",
     "build-indexes": "tsx scripts/build-indexes.ts",
+    "build-bundled": "tsx scripts/build-bundled.ts",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {

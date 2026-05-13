@@ -13,3 +13,7 @@ export default defineConfig({
   splitting: false,
   treeshake: true,
 });
+// Note: the `./bundled` entry is emitted by scripts/build-bundled.ts after
+// tsup runs (see the `build` script). We can't route it through tsup because
+// tsup's CJS/ESM interop replaces `require(literal)` with `__require(literal)`,
+// which Metro's static dependency extractor does not follow into the bundle.
