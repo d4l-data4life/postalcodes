@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-01T05:56:39.457Z",
+  "generatedAt": "2026-07-01T05:51:14.595Z",
   "source": "https://download.geonames.org/export/zip/allCountries.zip",
   "formatVersion": 1,
   "countries": {
@@ -35,8 +35,8 @@
     },
     "AT": {
       "file": "AT.json",
-      "count": 2217,
-      "bytes": 5497
+      "count": 2501,
+      "bytes": 6201
     },
     "AU": {
       "file": "AU.json",
