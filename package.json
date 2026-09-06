@@ -1,6 +1,6 @@
 {
   "name": "@d4l/postalcodes",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Offline world-wide postal-code validation with per-country indexes. Works in Node, browsers, and React Native. Data from GeoNames (CC BY 4.0).",
   "keywords": [
     "postal",
